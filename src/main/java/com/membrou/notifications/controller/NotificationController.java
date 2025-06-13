@@ -22,7 +22,7 @@ public class NotificationController {
         notificationDto.setDestination("mail@marrios.com");
         notificationDto.setSubject("Hello World");
         notificationDto.setMessage("Bom dia meu amigo");
-        mailSender.send(new NotificationDto());
+        mailSender.send(notificationDto);
         return ResponseEntity.ok("E-mail enviado com sucesso!");
     }
 }
