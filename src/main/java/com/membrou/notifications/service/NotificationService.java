@@ -4,10 +4,12 @@ import com.membrou.notifications.messaging.kafka.dto.NotificationEvent;
 import com.membrou.notifications.messaging.kafka.producer.NotificationKafkaProducer;
 import com.membrou.notifications.model.Notification;
 import com.membrou.notifications.notification.dto.NotificationDto;
-import com.membrou.notifications.notification.sender.mail.MailSender;
+import com.membrou.notifications.notification.sender.NotificationSenderStrategy;
 import com.membrou.notifications.repository.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 public class NotificationService {
@@ -16,18 +18,19 @@ public class NotificationService {
     private NotificationRepository notificationRepository;
 
     @Autowired
-    private MailSender mailSender;
-
-    @Autowired
     private NotificationKafkaProducer notificationKafkaProducer;
 
-    public Notification send(NotificationDto dto) {
+    @Autowired
+    private NotificationSenderStrategy notificationSenderStrategy;
+
+    public Notification publish(NotificationDto dto) {
         Notification notification = new Notification();
         notification.setMessage(dto.getMessage());
         notification.setSubject(dto.getSubject());
         notification.setType(dto.getType());
-        notification.setStatus(dto.getStatus());
+        notification.setStatus("PENDING");
         notification.setDestination(dto.getDestination());
+        notification.setCreatedAt(LocalDateTime.now());
 
         Notification notificationSaved = notificationRepository.save(notification);
 
@@ -40,5 +43,10 @@ public class NotificationService {
 
         notificationKafkaProducer.send(notificationEvent);
         return notification;
+    }
+
+    public boolean send(NotificationDto notificationDto) {
+        this.notificationSenderStrategy.getSender(notificationDto.getType()).send(notificationDto);
+        return true;
     }
 }

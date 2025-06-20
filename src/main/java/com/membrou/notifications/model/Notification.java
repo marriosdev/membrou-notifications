@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
 
@@ -14,9 +15,14 @@ public class Notification {
     private String id;
 
     private String type;
+
     private String destination;
+
     private String subject;
+
     private String message;
+
     private LocalDateTime createdAt;
+
     private String status;
 }

@@ -5,16 +5,22 @@ import com.membrou.notifications.notification.sender.NotificationSender;
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Properties;
 
-@Service
-public class MailSender implements NotificationSender {
+@Component
+public class MailSender implements MailSenderContract {
     private NotificationDto notification;
 
     @Autowired
     private MailProperties mailProperties;
+
+    @Override
+    public String getType() {
+        return "mail";
+    }
 
     public void send(NotificationDto notificationDto) {
         String to = notificationDto.getDestination();
@@ -45,11 +51,8 @@ public class MailSender implements NotificationSender {
             );
             message.setSubject(notificationDto.getSubject());
             message.setText(notificationDto.getMessage());
-
             Transport.send(message);
-
-            System.out.println("E-mail enviado com sucesso!");
-
+            System.out.println("E-mail enviado com sucesso!" + message.toString());
         } catch (MessagingException e) {
             e.printStackTrace();
         }
