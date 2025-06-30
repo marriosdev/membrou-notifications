@@ -19,7 +19,6 @@ public class NotificationController {
     @PostMapping("send")
     public ResponseEntity<Notification> sendNotification(@RequestBody NotificationDto notificationDto)
     {
-        notificationService.publish(notificationDto);
         return ResponseEntity.ok(notificationService.publish(notificationDto));
     }
 }
