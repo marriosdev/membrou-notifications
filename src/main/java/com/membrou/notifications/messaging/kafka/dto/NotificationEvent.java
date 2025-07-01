@@ -5,9 +5,9 @@ import lombok.Data;
 
 @Data
 public class NotificationEvent {
+    private String messageId;
     private String type;
     private String destination;
     private String subject;
     private String message;
-    private Notification notificationRecord;
 }

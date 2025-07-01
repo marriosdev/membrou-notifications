@@ -31,16 +31,15 @@ public class NotificationKafkaConsumer {
             notificationService.send(notificationDto);
 
             Notification notification = this.notificationRepository.findById(
-                    event.getNotificationRecord().getId()
+                    event.getMessageId()
             ).orElseThrow(() -> new RuntimeException());
             notification.setStatus("SUCCESS");
 
             notificationRepository.save(notification);
         } catch (Exception e) {
             Notification notification = this.notificationRepository.findById(
-                    event.getNotificationRecord().getId()
+                    event.getMessageId()
             ).orElseThrow(() -> new RuntimeException());
-
             notification.setStatus("ERROR");
             throw new RuntimeException(e);
         }

@@ -39,7 +39,7 @@ public class NotificationService {
         notificationEvent.setDestination(notificationSaved.getDestination());
         notificationEvent.setSubject(notificationSaved.getSubject());
         notificationEvent.setMessage(notificationSaved.getMessage());
-        notificationEvent.setNotificationRecord(notification);
+        notificationEvent.setMessageId(notification.getId());
 
         notificationKafkaProducer.send(notificationEvent);
         return notification;
