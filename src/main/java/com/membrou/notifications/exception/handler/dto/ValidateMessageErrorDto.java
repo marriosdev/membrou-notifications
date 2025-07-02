@@ -1,4 +1,4 @@
-package com.membrou.notifications.exceptions.handler.dto;
+package com.membrou.notifications.exception.handler.dto;
 
 import lombok.Getter;
 import lombok.Setter;

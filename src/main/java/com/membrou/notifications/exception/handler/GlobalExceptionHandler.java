@@ -1,8 +1,7 @@
-package com.membrou.notifications.exceptions.handler;
+package com.membrou.notifications.exception.handler;
 
-import com.membrou.notifications.exceptions.handler.dto.ValidateMessageErrorDto;
-import com.membrou.notifications.exceptions.handler.notifications.InvalidNotificationException;
-import org.apache.coyote.Response;
+import com.membrou.notifications.exception.handler.dto.ValidateMessageErrorDto;
+import com.membrou.notifications.exception.handler.notifications.InvalidNotificationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

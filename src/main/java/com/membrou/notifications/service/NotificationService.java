@@ -1,6 +1,5 @@
 package com.membrou.notifications.service;
 
-import com.membrou.notifications.exceptions.handler.notifications.InvalidNotificationException;
 import com.membrou.notifications.messaging.kafka.dto.NotificationEvent;
 import com.membrou.notifications.messaging.kafka.producer.NotificationKafkaProducer;
 import com.membrou.notifications.model.Notification;

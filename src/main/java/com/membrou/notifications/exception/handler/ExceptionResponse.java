@@ -1,4 +1,4 @@
-package com.membrou.notifications.exceptions.handler;
+package com.membrou.notifications.exception.handler;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

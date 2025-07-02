@@ -1,7 +1,7 @@
 package com.membrou.notifications.notification.sender.mail;
 
 import com.membrou.notifications.dto.NotificationDto;
-import com.membrou.notifications.exceptions.handler.notifications.InvalidNotificationException;
+import com.membrou.notifications.exception.handler.notifications.InvalidNotificationException;
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
 import org.springframework.beans.factory.annotation.Autowired;
