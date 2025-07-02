@@ -1,12 +1,14 @@
 package com.membrou.notifications.notification.sender.mail;
 
 import com.membrou.notifications.dto.NotificationDto;
+import com.membrou.notifications.exceptions.handler.notifications.InvalidNotificationException;
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 @Component
 public class MailSender implements MailSenderContract {
@@ -54,5 +56,12 @@ public class MailSender implements MailSenderContract {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean validateMessage(NotificationDto notificationDto) {
+        if( !Pattern.compile( "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$").matcher(notificationDto.getDestination()).matches()) {
+            throw new InvalidNotificationException("Destinatário invalido para o tipo 'mail'");
+        }
+        return true;
     }
 }

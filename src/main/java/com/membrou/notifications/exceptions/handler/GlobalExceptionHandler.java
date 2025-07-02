@@ -1,6 +1,8 @@
 package com.membrou.notifications.exceptions.handler;
 
 import com.membrou.notifications.exceptions.handler.dto.ValidateMessageErrorDto;
+import com.membrou.notifications.exceptions.handler.notifications.InvalidNotificationException;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -35,5 +37,17 @@ public class GlobalExceptionHandler {
 
         response.setErrors(errorsList);
         return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler(InvalidNotificationException.class)
+    public ResponseEntity<ExceptionResponse> handleInvalidNotificationException(InvalidNotificationException ex, WebRequest request) {
+        ExceptionResponse response = new ExceptionResponse();
+
+        response.setStatus(HttpStatus.BAD_REQUEST.value());
+        response.setError("INVALID_NOTIFICATION");
+        response.setMessage(ex.getMessage());
+        response.setTimestamp(LocalDateTime.now());
+        response.setPath(request.getDescription(false).replaceFirst("uri=", ""));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 }

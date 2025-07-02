@@ -1,15 +1,16 @@
 package com.membrou.notifications.model;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
 
 @Getter @Setter
 @Document(collection = "notifications")
+@Builder
 public class Notification {
     @Id
     private String id;

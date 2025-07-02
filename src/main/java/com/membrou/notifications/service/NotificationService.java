@@ -1,48 +1,49 @@
 package com.membrou.notifications.service;
 
+import com.membrou.notifications.exceptions.handler.notifications.InvalidNotificationException;
 import com.membrou.notifications.messaging.kafka.dto.NotificationEvent;
 import com.membrou.notifications.messaging.kafka.producer.NotificationKafkaProducer;
 import com.membrou.notifications.model.Notification;
 import com.membrou.notifications.dto.NotificationDto;
+import com.membrou.notifications.notification.sender.NotificationSender;
 import com.membrou.notifications.notification.sender.NotificationSenderStrategy;
 import com.membrou.notifications.repository.NotificationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 
 @Service
+@RequiredArgsConstructor
 public class NotificationService {
-
-    @Autowired
-    private NotificationRepository notificationRepository;
-
-    @Autowired
-    private NotificationKafkaProducer notificationKafkaProducer;
-
-    @Autowired
-    private NotificationSenderStrategy notificationSenderStrategy;
+    final private NotificationRepository notificationRepository;
+    final private NotificationKafkaProducer notificationKafkaProducer;
+    final private NotificationSenderStrategy notificationSenderStrategy;
 
     public Notification publish(NotificationDto dto) {
-        Notification notification = new Notification();
-        notification.setMessage(dto.getMessage());
-        notification.setSubject(dto.getSubject());
-        notification.setType(dto.getType());
-        notification.setStatus("PENDING");
-        notification.setDestination(dto.getDestination());
-        notification.setCreatedAt(LocalDateTime.now());
+        NotificationSender sender = this.notificationSenderStrategy.getSender(dto.getType());
+        sender.validateMessage(dto);
 
-        Notification notificationSaved = notificationRepository.save(notification);
+        Notification notification = Notification.builder()
+            .type(dto.getType())
+            .subject(dto.getSubject())
+            .message(dto.getMessage())
+            .destination(dto.getDestination())
+            .status("PENDING")
+            .createdAt(LocalDateTime.now())
+            .build();
 
-        NotificationEvent notificationEvent = new NotificationEvent();
-        notificationEvent.setType(notificationSaved.getType());
-        notificationEvent.setDestination(notificationSaved.getDestination());
-        notificationEvent.setSubject(notificationSaved.getSubject());
-        notificationEvent.setMessage(notificationSaved.getMessage());
-        notificationEvent.setMessageId(notification.getId());
+        Notification saved = notificationRepository.save(notification);
 
-        notificationKafkaProducer.send(notificationEvent);
-        return notification;
+        NotificationEvent event = new NotificationEvent();
+        event.setType(saved.getType());
+        event.setSubject(saved.getSubject());
+        event.setMessage(saved.getMessage());
+        event.setDestination(saved.getDestination());
+        event.setMessageId(saved.getId());
+
+        notificationKafkaProducer.send(event);
+
+        return saved;
     }
 
     public boolean send(NotificationDto notificationDto) {

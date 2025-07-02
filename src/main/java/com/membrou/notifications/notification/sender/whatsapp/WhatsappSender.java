@@ -1,6 +1,7 @@
 package com.membrou.notifications.notification.sender.whatsapp;
 
 import com.membrou.notifications.dto.NotificationDto;
+import com.membrou.notifications.exceptions.handler.notifications.InvalidNotificationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +11,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.regex.Pattern;
 
 @Component
 public class WhatsappSender implements WhatsappSenderContract {
@@ -56,5 +58,12 @@ public class WhatsappSender implements WhatsappSenderContract {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Falha ao enviar mensagem WhatsApp", e);
         }
+    }
+
+    public boolean validateMessage(NotificationDto notificationDto) {
+        if( !Pattern.compile( "^(?:(?:\\+|00)?(55)\\s?)?(?:\\(?([1-9][0-9])\\)?\\s?)(?:((?:9\\d|[2-9])\\d{3})\\-?(\\d{4}))$").matcher(notificationDto.getDestination()).matches()) {
+            throw new InvalidNotificationException("Destinatário inválido para o tipo 'whatsapp'");
+        }
+        return true;
     }
 }
