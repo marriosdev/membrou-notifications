@@ -1,9 +1,8 @@
 package com.membrou.notifications.notification.sender.whatsapp;
 
-import com.membrou.notifications.notification.dto.NotificationDto;
+import com.membrou.notifications.dto.NotificationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URI;

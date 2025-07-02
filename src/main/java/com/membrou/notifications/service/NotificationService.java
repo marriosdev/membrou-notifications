@@ -3,7 +3,7 @@ package com.membrou.notifications.service;
 import com.membrou.notifications.messaging.kafka.dto.NotificationEvent;
 import com.membrou.notifications.messaging.kafka.producer.NotificationKafkaProducer;
 import com.membrou.notifications.model.Notification;
-import com.membrou.notifications.notification.dto.NotificationDto;
+import com.membrou.notifications.dto.NotificationDto;
 import com.membrou.notifications.notification.sender.NotificationSenderStrategy;
 import com.membrou.notifications.repository.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;

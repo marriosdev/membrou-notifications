@@ -2,11 +2,10 @@ package com.membrou.notifications.messaging.kafka.consumer;
 
 import com.membrou.notifications.messaging.kafka.dto.NotificationEvent;
 import com.membrou.notifications.model.Notification;
-import com.membrou.notifications.notification.dto.NotificationDto;
+import com.membrou.notifications.dto.NotificationDto;
 import com.membrou.notifications.repository.NotificationRepository;
 import com.membrou.notifications.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 

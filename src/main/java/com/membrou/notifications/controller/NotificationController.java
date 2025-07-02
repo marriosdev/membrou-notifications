@@ -1,9 +1,11 @@
 package com.membrou.notifications.controller;
 
 import com.membrou.notifications.model.Notification;
-import com.membrou.notifications.notification.dto.NotificationDto;
+import com.membrou.notifications.dto.NotificationDto;
 import com.membrou.notifications.service.NotificationService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,8 +19,8 @@ public class NotificationController {
     private NotificationService notificationService;
 
     @PostMapping("send")
-    public ResponseEntity<Notification> sendNotification(@RequestBody NotificationDto notificationDto)
+    public ResponseEntity<Notification> sendNotification(@Valid  @RequestBody NotificationDto notificationDto)
     {
-        return ResponseEntity.ok(notificationService.publish(notificationDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(notificationService.publish(notificationDto));
     }
 }

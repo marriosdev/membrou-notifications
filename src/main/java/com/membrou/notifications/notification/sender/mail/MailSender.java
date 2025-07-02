@@ -1,12 +1,10 @@
 package com.membrou.notifications.notification.sender.mail;
 
-import com.membrou.notifications.notification.dto.NotificationDto;
-import com.membrou.notifications.notification.sender.NotificationSender;
+import com.membrou.notifications.dto.NotificationDto;
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.Properties;
 
