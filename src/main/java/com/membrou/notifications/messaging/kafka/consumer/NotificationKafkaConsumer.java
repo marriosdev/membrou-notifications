@@ -5,6 +5,7 @@ import com.membrou.notifications.model.Notification;
 import com.membrou.notifications.dto.NotificationDto;
 import com.membrou.notifications.repository.NotificationRepository;
 import com.membrou.notifications.service.NotificationService;
+import io.sentry.Sentry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
@@ -32,6 +33,7 @@ public class NotificationKafkaConsumer {
             Notification notification = this.notificationRepository.findById(
                     event.getMessageId()
             ).orElseThrow(() -> new RuntimeException());
+
             notification.setStatus("SUCCESS");
 
             notificationRepository.save(notification);
@@ -39,7 +41,10 @@ public class NotificationKafkaConsumer {
             Notification notification = this.notificationRepository.findById(
                     event.getMessageId()
             ).orElseThrow(() -> new RuntimeException());
+
             notification.setStatus("ERROR");
+            notificationRepository.save(notification);
+            Sentry.captureException(e);
             throw new RuntimeException(e);
         }
     }

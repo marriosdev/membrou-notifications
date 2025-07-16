@@ -3,6 +3,7 @@ package com.membrou.notifications.controller;
 import com.membrou.notifications.model.Notification;
 import com.membrou.notifications.dto.NotificationDto;
 import com.membrou.notifications.service.NotificationService;
+import io.sentry.Sentry;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

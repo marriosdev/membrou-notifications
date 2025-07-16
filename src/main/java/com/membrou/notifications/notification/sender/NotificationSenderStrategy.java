@@ -1,5 +1,6 @@
 package com.membrou.notifications.notification.sender;
 
+import com.membrou.notifications.exception.handler.notifications.InvalidNotificationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +23,7 @@ public class NotificationSenderStrategy {
     public NotificationSender getSender(String type) {
         NotificationSender sender = senderMap.get(type.toLowerCase());
         if (sender == null) {
-            throw new IllegalArgumentException("Tipo de notificação não suportado: " + type);
+            throw new InvalidNotificationException("Tipo de notificação não suportado: " + type);
         }
         return sender;
     }

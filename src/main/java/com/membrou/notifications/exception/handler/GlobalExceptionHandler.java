@@ -2,6 +2,7 @@ package com.membrou.notifications.exception.handler;
 
 import com.membrou.notifications.exception.handler.dto.ValidateMessageErrorDto;
 import com.membrou.notifications.exception.handler.notifications.InvalidNotificationException;
+import io.sentry.Sentry;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -48,5 +49,17 @@ public class GlobalExceptionHandler {
         response.setTimestamp(LocalDateTime.now());
         response.setPath(request.getDescription(false).replaceFirst("uri=", ""));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ExceptionResponse> runtimeException(RuntimeException ex, WebRequest request) {
+        Sentry.captureException(ex);
+        ExceptionResponse response = new ExceptionResponse();
+        response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        response.setError("INTERNAL_ERROR");
+        response.setMessage(ex.getMessage());
+        response.setTimestamp(LocalDateTime.now());
+        response.setPath(request.getDescription(false).replaceFirst("uri=", ""));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value()).body(response);
     }
 }

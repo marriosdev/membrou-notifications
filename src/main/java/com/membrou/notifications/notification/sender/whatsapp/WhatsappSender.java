@@ -2,6 +2,7 @@ package com.membrou.notifications.notification.sender.whatsapp;
 
 import com.membrou.notifications.dto.NotificationDto;
 import com.membrou.notifications.exception.handler.notifications.InvalidNotificationException;
+import io.sentry.Sentry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -56,6 +57,7 @@ public class WhatsappSender implements WhatsappSenderContract {
             }
 
         } catch (IOException | InterruptedException e) {
+            Sentry.captureException(e);
             throw new RuntimeException("Falha ao enviar mensagem WhatsApp", e);
         }
     }
