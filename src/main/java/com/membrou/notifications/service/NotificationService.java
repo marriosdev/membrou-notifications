@@ -1,5 +1,6 @@
 package com.membrou.notifications.service;
 
+import com.membrou.notifications.exception.handler.notifications.NotFoundNotificationNotification;
 import com.membrou.notifications.messaging.kafka.dto.NotificationEvent;
 import com.membrou.notifications.messaging.kafka.producer.NotificationKafkaProducer;
 import com.membrou.notifications.model.Notification;
@@ -48,5 +49,9 @@ public class NotificationService {
     public boolean send(NotificationDto notificationDto) {
         this.notificationSenderStrategy.getSender(notificationDto.getType()).send(notificationDto);
         return true;
+    }
+
+    public Notification getById(String id) {
+        return this.notificationRepository.findById(id).orElseThrow(() -> new NotFoundNotificationNotification("Notificação não encontrada"));
     }
 }
